@@ -1,0 +1,14 @@
+curl 'https://dashboard.hammerhead.io/v1/shares/tracking/rwUtCs7G' \
+  -H 'Connection: keep-alive' \
+  -H 'sec-ch-ua: " Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36' \
+  -H 'sec-ch-ua-platform: "Linux"' \
+  -H 'Accept: */*' \
+  -H 'Sec-Fetch-Site: same-origin' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Referer: https://dashboard.hammerhead.io/live/rwUtCs7G' \
+  -H 'Accept-Language: en-US,en-AU;q=0.9,en;q=0.8' \
+  -H 'Cookie: _y=642e5f39-12d0-493a-90d3-0dd9e4606f79; _shopify_y=642e5f39-12d0-493a-90d3-0dd9e4606f79; _iub_cs-25094088=%7B%22consent%22%3Atrue%2C%22timestamp%22%3A%222021-08-27T17%3A35%3A57.330Z%22%2C%22version%22%3A%221.2.4%22%2C%22id%22%3A25094088%7D; __zlcmid=15mkHr9oVSBzEpr' \
+  --compressed

@@ -1,0 +1,13 @@
+{
+  "id": "37611.tracking.2104a1e4-d083-4c6c-b2e8-e2e2f7df4dd8",
+  "riderName": "Steven Masley",
+  "createdAt": "2021-09-16T23:04:22.119Z",
+  "updatedAt": "2022-03-12T21:03:48.256Z",
+  "state": "idle",
+  "location": {
+    "lat": 30.37400452,
+    "lng": -97.76206605
+  },
+  "bearing": 0,
+  "activityInfo": []
+}

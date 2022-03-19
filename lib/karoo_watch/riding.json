@@ -1,0 +1,49 @@
+{
+  "id": "37611.tracking.2104a1e4-d083-4c6c-b2e8-e2e2f7df4dd8",
+  "riderName": "Steven Masley",
+  "createdAt": "2021-09-16T23:04:22.119Z",
+  "updatedAt": "2022-03-19T16:14:18.967Z",
+  "state": "riding",
+  "location": {
+    "lat": 30.37405501,
+    "lng": -97.76210074
+  },
+  "bearing": 0,
+  "activityInfo": [
+    {
+      "key": "TYPE_ELEVATION_GAIN_ID",
+      "value": {
+        "format": "double",
+        "value": 1.656824081927084
+      }
+    },
+    {
+      "key": "TYPE_ELAPSED_TIME_ID",
+      "value": {
+        "format": "double",
+        "value": 263000
+      }
+    },
+    {
+      "key": "TYPE_DISTANCE_ID",
+      "value": {
+        "format": "double",
+        "value": 18.0064194946317
+      }
+    },
+    {
+      "key": "TYPE_BATTERY_PERCENT_ID",
+      "value": {
+        "format": "double",
+        "value": 99
+      }
+    },
+    {
+      "key": "TYPE_AVERAGE_SPEED_ID",
+      "value": {
+        "format": "double",
+        "value": 0.05339192809461124
+      }
+    }
+  ]
+}
