@@ -1,11 +1,13 @@
-defmodule Karoo.Watcher do
+defmodule Bike.Karoo.Watcher do
   use GenServer
   require Logger
+  alias Bike.Karoo
 
   # Client
 
   # Karoo.start_link("rwUtCs7G")
   def start_link(id) do
+    Logger.info("Starting new karoo watcher")
     {:ok, pid} = GenServer.start_link(__MODULE__, id)
     GenServer.cast(pid, :start)
     {:ok, pid}
@@ -45,7 +47,25 @@ defmodule Karoo.Watcher do
 
     case Karoo.Rider.activity(rider) do
       {:ok, activity} ->
-        IO.inspect(activity)
+        #  Map the activity to our DB schema type Bike.Entry
+
+        withKey = fn list, key -> Enum.find(list, nil, &(&1["key"] == key))["value"]["value"] end
+
+        entry = %Bike.Entry{
+          rider_name: activity["riderName"],
+          state: activity["state"],
+          lat: activity["location"]["lat"],
+          lng: activity["location"]["lng"],
+          bearing: activity["bearing"] * 1.0,
+          avg_speed: withKey.(activity["activityInfo"], "TYPE_AVERAGE_SPEED_ID") * 1.0,
+          battery_percent: withKey.(activity["activityInfo"], "TYPE_BATTERY_PERCENT_ID") * 1.0,
+          elevation_gain: withKey.(activity["activityInfo"], "TYPE_ELEVATION_GAIN_ID") * 1.0,
+          time_elapsed: withKey.(activity["activityInfo"], "TYPE_ELAPSED_TIME_ID") * 1.0,
+          total_distance: withKey.(activity["activityInfo"], "TYPE_DISTANCE_ID") * 1.0
+        }
+
+        Bike.Repo.insert(entry)
+        Logger.info("recorded new activity entry: state=#{entry.state}")
 
       {:error, reason} ->
         Logger.error("Polling failed: #{reason}")
@@ -53,13 +73,14 @@ defmodule Karoo.Watcher do
   end
 end
 
-defmodule Karoo.Rider do
+defmodule Bike.Karoo.Rider do
   @moduledoc """
   This module controls the functions to retrieve information about a given rider.
   The module is an Agent, and should be instantiated with 'Karoo.Rider.start_link/1' with the
   Karoo rider ID for live tracking.
   """
   use Agent
+  alias Bike.Karoo
 
   # rwUtCs7G
   def start_link(id) do
@@ -76,7 +97,9 @@ defmodule Karoo.Rider do
   end
 end
 
-defmodule Karoo.Fetch do
+defmodule Bike.Karoo.Fetch do
+  alias Bike.Karoo
+
   def track_url(id) do
     "https://dashboard.hammerhead.io/v1/shares/tracking/#{id}"
   end

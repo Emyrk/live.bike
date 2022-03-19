@@ -1,5 +1,6 @@
-defmodule Karoo.TestRider do
+defmodule Bike.Karoo.TestRider do
   use ExUnit.Case
+  alias Bike.Karoo
 
   setup %{} do
     id = "rwUtCs7G"

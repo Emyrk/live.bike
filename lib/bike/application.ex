@@ -15,7 +15,8 @@ defmodule Bike.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Bike.PubSub},
       # Start the Endpoint (http/https)
-      BikeWeb.Endpoint
+      BikeWeb.Endpoint,
+      {Bike.Karoo.Watcher, Application.get_env(:bike, Bike.Karoo.Watcher)[:rider_id]}
       # Start a worker by calling: Bike.Worker.start_link(arg)
       # {Bike.Worker, arg}
     ]

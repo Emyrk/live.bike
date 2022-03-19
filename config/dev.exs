@@ -1,8 +1,10 @@
 import Config
 
+config :bike, Bike.Karoo.Watcher, rider_id: "rwUtCs7G"
+
 # Configure your database
 config :bike, Bike.Repo,
-  database: "/tmp/sqllite/database.db",
+  # database: "/tmp/sqllite/database.db",
   username: "postgres",
   password: "postgres",
   hostname: "localhost",

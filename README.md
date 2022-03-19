@@ -24,15 +24,16 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
 DB Schema
 
 ```
+// Updated_at is included
 mix phx.gen.schema Entry entries rider_name:string \
-  updated_at:time \
   state:string \
-  lat: float \
-  lng: float \
-  bearing: float \
-  elevation_gain: float \
-  time_elapsed: float \
-  total_distance: float \
-  battery_percent: float \
-  avg_speed: float
+  lat:float \
+  lng:float \
+  bearing:float \
+  elevation_gain:float \
+  time_elapsed:float \
+  total_distance:float \
+  battery_percent:float \
+  avg_speed:float
+mix ecto.migrate
 ```
