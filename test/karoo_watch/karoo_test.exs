@@ -3,12 +3,12 @@ defmodule Karoo.TestRider do
 
   setup %{} do
     id = "rwUtCs7G"
-    {:ok, rider} = Karoo.start(id)
+    {:ok, rider} = Karoo.Rider.start_link(id)
     %{rider: rider}
   end
 
   test "fetch activity", %{rider: rider} do
-    assert Karoo.id(rider) != ""
-    assert match?({:ok, _}, assert(Karoo.activity(rider)))
+    assert Karoo.Rider.id(rider) != ""
+    assert match?({:ok, _}, assert(Karoo.Rider.activity(rider)))
   end
 end

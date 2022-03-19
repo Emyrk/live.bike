@@ -1,8 +1,68 @@
 defmodule Karoo do
+  use GenServer
+  require Logger
+
+  # Client
+
+  # Karoo.start_link("rwUtCs7G")
+  def start_link(id) do
+    {:ok, pid} = GenServer.start_link(__MODULE__, id)
+    GenServer.cast(pid, :start)
+    {:ok, pid}
+  end
+
+  # State
+  #   rider: Karoo.Rider
+
+  # Server
+
+  @impl true
+  def init(id) do
+    {:ok, rider} = Karoo.Rider.start_link(id)
+    {:ok, %{rider: rider}}
+  end
+
+  @impl true
+  def handle_cast(:start, state) do
+    Process.send(self(), :poll_activity, [])
+    {:noreply, state}
+  end
+
+  @impl true
+  def handle_info(:poll_activity, state) do
+    # poll_activity will poll the rider's activity
+    poll_activity(state)
+    schedule_work()
+    {:noreply, state}
+  end
+
+  defp schedule_work do
+    Process.send_after(self(), :poll_activity, 5000)
+  end
+
+  defp poll_activity(state) do
+    %{rider: rider} = state
+
+    case Karoo.Rider.activity(rider) do
+      {:ok, activity} ->
+        IO.inspect(activity)
+
+      {:error, reason} ->
+        Logger.error("Polling failed: #{reason}")
+    end
+  end
+end
+
+defmodule Karoo.Rider do
+  @moduledoc """
+  This module controls the functions to retrieve information about a given rider.
+  The module is an Agent, and should be instantiated with 'Karoo.Rider.start_link/1' with the
+  Karoo rider ID for live tracking.
+  """
   use Agent
 
   # rwUtCs7G
-  def start(id) do
+  def start_link(id) do
     Agent.start_link(fn -> %{id: id} end)
   end
 
