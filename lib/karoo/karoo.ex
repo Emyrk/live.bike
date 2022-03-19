@@ -1,4 +1,4 @@
-defmodule Karoo do
+defmodule Karoo.Watcher do
   use GenServer
   require Logger
 

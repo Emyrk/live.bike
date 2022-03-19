@@ -17,3 +17,22 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+
+## My notes
+
+DB Schema
+
+```
+mix phx.gen.schema Entry entries rider_name:string \
+  updated_at:time \
+  state:string \
+  lat: float \
+  lng: float \
+  bearing: float \
+  elevation_gain: float \
+  time_elapsed: float \
+  total_distance: float \
+  battery_percent: float \
+  avg_speed: float
+```
