@@ -42,35 +42,26 @@ defmodule Bike.Karoo.Watcher do
     Process.send_after(self(), :poll_activity, 5000)
   end
 
-  def activity_by_key(list, key) do
-    case Enum.find(list, nil, &(&1["key"] == key)) do
-      nil ->
-        -1.0
-
-      value ->
-        value["value"]["value"]
-    end
-  end
-
   defp poll_activity(state) do
     %{rider: rider} = state
 
     case Karoo.Rider.activity(rider) do
       {:ok, activity} ->
         #  Map the activity to our DB schema type Bike.Entry
+
+        withKey = fn list, key -> Enum.find(list, nil, &(&1["key"] == key))["value"]["value"] end
+
         entry = %Bike.Entry{
           rider_name: activity["riderName"],
           state: activity["state"],
           lat: activity["location"]["lat"],
           lng: activity["location"]["lng"],
           bearing: activity["bearing"] * 1.0,
-          avg_speed: activity_by_key(activity["activityInfo"], "TYPE_AVERAGE_SPEED_ID") * 1.0,
-          battery_percent:
-            activity_by_key(activity["activityInfo"], "TYPE_BATTERY_PERCENT_ID") * 1.0,
-          elevation_gain:
-            activity_by_key(activity["activityInfo"], "TYPE_ELEVATION_GAIN_ID") * 1.0,
-          time_elapsed: activity_by_key(activity["activityInfo"], "TYPE_ELAPSED_TIME_ID") * 1.0,
-          total_distance: activity_by_key(activity["activityInfo"], "TYPE_DISTANCE_ID") * 1.0
+          avg_speed: withKey.(activity["activityInfo"], "TYPE_AVERAGE_SPEED_ID") * 1.0,
+          battery_percent: withKey.(activity["activityInfo"], "TYPE_BATTERY_PERCENT_ID") * 1.0,
+          elevation_gain: withKey.(activity["activityInfo"], "TYPE_ELEVATION_GAIN_ID") * 1.0,
+          time_elapsed: withKey.(activity["activityInfo"], "TYPE_ELAPSED_TIME_ID") * 1.0,
+          total_distance: withKey.(activity["activityInfo"], "TYPE_DISTANCE_ID") * 1.0
         }
 
         Bike.Repo.insert(entry)
