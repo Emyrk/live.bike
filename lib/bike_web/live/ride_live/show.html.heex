@@ -1,0 +1,21 @@
+<h1>Show Ride</h1>
+
+<%= if @live_action in [:edit] do %>
+  <.modal return_to={Routes.ride_show_path(@socket, :show, @ride)}>
+    <.live_component
+      module={BikeWeb.RideLive.FormComponent}
+      id={@ride.id}
+      title={@page_title}
+      action={@live_action}
+      ride={@ride}
+      return_to={Routes.ride_show_path(@socket, :show, @ride)}
+    />
+  </.modal>
+<% end %>
+
+<ul>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.ride_show_path(@socket, :edit, @ride), class: "button" %></span> |
+<span><%= live_redirect "Back", to: Routes.ride_index_path(@socket, :index) %></span>

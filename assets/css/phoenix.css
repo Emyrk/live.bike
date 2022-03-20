@@ -99,3 +99,9 @@ header nav a {
     margin: 2rem 1rem;
   }
 }
+
+
+#bike-map {
+  width: 70%;
+  height: 400px;
+}

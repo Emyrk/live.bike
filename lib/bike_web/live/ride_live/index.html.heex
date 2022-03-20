@@ -1,0 +1,52 @@
+<h1>Listing Rides</h1>
+
+<%= if @live_action in [:new, :edit] do %>
+  <.modal return_to={Routes.ride_index_path(@socket, :index)}>
+    <.live_component
+      module={BikeWeb.RideLive.FormComponent}
+      id={@ride.id || :new}
+      title={@page_title}
+      action={@live_action}
+      ride={@ride}
+      return_to={Routes.ride_index_path(@socket, :index)}
+    />
+  </.modal>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="rides">
+    <%= for ride <- @rides do %>
+      <tr id={"ride-#{ride.state}"}>
+        <td>
+        
+          <span>State=<%= "#{ride.state}" %> </span>
+
+          <span><%=# live_redirect "Show", to: Routes.ride_show_path(@socket, :show, ride) %></span>
+          <span><%=# live_patch "Edit", to: Routes.ride_index_path(@socket, :edit, ride) %></span>
+          <span><%=# link "Delete", to: "#", phx_click: "delete", phx_value_id: ride.id, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<div id="bike-map" phx-hook="MainMap"> 
+</div>
+
+<%# <script>
+  const map = new mapboxgl.Map({
+    container: 'map', // container id
+    stle: 'mapbox://styles/mapbox/streets-v11', // style URL'
+    center: [30.2672, 97.7431], // lng, lat
+    zoom: 9,
+  })
+</script> %>
+
+<span><%=# live_patch "New Ride", to: Routes.ride_index_path(@socket, :new) %></span>

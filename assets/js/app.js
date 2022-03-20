@@ -26,9 +26,52 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import mapboxgl from "mapbox-gl"
+import mapboxglSupported from "@mapbox/mapbox-gl-supported"
+
+
+let Hooks = {}
+
+Hooks.MainMap = {
+  initMap() {
+    // if (mapboxglSupported.supported()) {
+    //   console.log("--------Yes")
+    // } else {
+    //   console.log("--------No")
+    // }
+
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZW15cmsiLCJhIjoiY2wweW93ZnYzMGp0OTNvbzN5a2VvNWVldyJ9.QyM0MUn75YqHqMUvMlMaag';
+    const map = new mapboxgl.Map({
+      container: 'bike-map', // container id
+      style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    })
+
+    map.on('load', function () {
+      map.resize();
+      map.addLayer({
+        'id': 'WaPo',
+        'type': 'circle',
+        'source': 'WaPo',
+        'layout': {
+          // make layer visible by default
+          'visibility': 'visible'
+        },
+        'paint': {
+          'circle-radius': 2,
+          'circle-color': 'rgba(55,148,179,1)'
+        },
+        'source-layer': 'WaPo'
+      });
+    })
+  },
+
+  mounted() {
+    this.initMap()
+  }
+}
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken } })
+let liveSocket = new LiveSocket("/live", Socket, { params: { _csrf_token: csrfToken }, hooks: Hooks })
 
 // Show progress bar on live navigation and form submits
 topbar.config({ barColors: { 0: "#29d" }, shadowColor: "rgba(0, 0, 0, .3)" })

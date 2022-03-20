@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Assets for LiveBike",
   "dependencies": {
+    "@mapbox/mapbox-gl-supported": "^2.0.1",
     "mapbox-gl": "^2.7.1",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
