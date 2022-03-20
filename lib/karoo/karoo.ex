@@ -52,6 +52,7 @@ defmodule Bike.Karoo.Watcher do
     end
   end
 
+  # Poll acitvity will enter the latest data point into the database
   defp poll_activity(state) do
     %{rider: rider} = state
 
