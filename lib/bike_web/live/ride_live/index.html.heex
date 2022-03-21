@@ -22,29 +22,22 @@
   </thead>
   <tbody id="rides">
     <%= for ride <- @rides do %>
-      <tr id={"ride-#{ride.state}"}>
-        <td>
-        
-          <span>State=<%= "#{ride.state}" %> </span>
-
-          <span><%=# live_redirect "Show", to: Routes.ride_show_path(@socket, :show, ride) %></span>
-          <span><%=# live_patch "Edit", to: Routes.ride_index_path(@socket, :edit, ride) %></span>
-          <span><%=# link "Delete", to: "#", phx_click: "delete", phx_value_id: ride.id, data: [confirm: "Are you sure?"] %></span>
-        </td>
-      </tr>
+     
     <% end %>
   </tbody>
 </table>
 
-
-<div id="bike-map" phx-hook="MainMap"> 
+<button phx-click="init_map">Click</button>
+<div id="bike-map-container" phx-update="ignore" phx-hook="MainMap">
+<div id="bike-map" phx-update="ignore" phx-hook="MapEntryHandler"> 
+</div>
 </div>
 
 <%# <script>
   const map = new mapboxgl.Map({
-    container: 'map', // container id
-    stle: 'mapbox://styles/mapbox/streets-v11', // style URL'
-    center: [30.2672, 97.7431], // lng, lat
+    container: 'bike-map', // container id
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL'
+    center: [97.7431, 30.2672], // lng, lat
     zoom: 9,
   })
 </script> %>

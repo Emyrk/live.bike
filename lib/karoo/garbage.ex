@@ -26,6 +26,7 @@ defmodule Bike.Karoo.GarbageCollection do
     {:ok, state}
   end
 
+  @impl true
   def handle_cast(:start, state) do
     Process.send(self(), :poll_activity, [])
     {:noreply, state}

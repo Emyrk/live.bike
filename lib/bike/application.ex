@@ -16,6 +16,7 @@ defmodule Bike.Application do
       {Phoenix.PubSub, name: Bike.PubSub},
       # Start the Endpoint (http/https)
       BikeWeb.Endpoint,
+      # Starts all required services for managing the Karoo data
       Bike.Karoo.Supervisor
       # Start a worker by calling: Bike.Worker.start_link(arg)
       # {Bike.Worker, arg}

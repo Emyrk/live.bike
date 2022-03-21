@@ -39,7 +39,7 @@ defmodule Bike.Karoo.Watcher do
   end
 
   defp schedule_work do
-    Process.send_after(self(), :poll_activity, 5000)
+    Process.send_after(self(), :poll_activity, 15000)
   end
 
   def activity_by_key(list, key) do
@@ -60,6 +60,7 @@ defmodule Bike.Karoo.Watcher do
       {:ok, activity} ->
         #  Map the activity to our DB schema type Bike.Entry
         entry = %Bike.Entry{
+          json: activity.json,
           rider_name: activity["riderName"],
           state: activity["state"],
           lat: activity["location"]["lat"],
@@ -76,6 +77,7 @@ defmodule Bike.Karoo.Watcher do
 
         Bike.Repo.insert(entry)
         Logger.info("recorded new activity entry: state=#{entry.state}")
+        Bike.Karoo.Ride.send_event(entry)
 
       {:error, reason} ->
         Logger.error("Polling failed: #{reason}")
@@ -117,7 +119,8 @@ defmodule Bike.Karoo.Fetch do
   def activity(id) do
     case HTTPoison.get(track_url(id)) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        Poison.decode(body)
+        {:ok, decoded} = Poison.decode(body)
+        {:ok, Map.merge(decoded, %{json: body})}
 
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         # {:ok, body} = Poison.decode(body)

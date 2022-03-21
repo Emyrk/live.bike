@@ -25,11 +25,26 @@ import "phoenix_html"
 import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import mapboxgl from "mapbox-gl"
+import mapboxgl, { Marker } from "mapbox-gl"
 import mapboxglSupported from "@mapbox/mapbox-gl-supported"
 
 
 let Hooks = {}
+
+let map = {}
+
+Hooks.MapEntryHandler = {
+  mounted() {
+    const handleNewRideEntry = ({ entry }) => {
+      const marker = new Marker().setLngLat([entry.lng, entry.lat])
+      marker.addTo(map)
+      console.log("ASD")
+    }
+
+    // handle new sightings as they show up
+    this.handleEvent('new_entry', handleNewRideEntry)
+  }
+}
 
 Hooks.MainMap = {
   initMap() {
@@ -41,28 +56,28 @@ Hooks.MainMap = {
 
 
     mapboxgl.accessToken = 'pk.eyJ1IjoiZW15cmsiLCJhIjoiY2wweW93ZnYzMGp0OTNvbzN5a2VvNWVldyJ9.QyM0MUn75YqHqMUvMlMaag';
-    const map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
       container: 'bike-map', // container id
       style: 'mapbox://styles/mapbox/streets-v11', // style URL
     })
 
-    map.on('load', function () {
-      map.resize();
-      map.addLayer({
-        'id': 'WaPo',
-        'type': 'circle',
-        'source': 'WaPo',
-        'layout': {
-          // make layer visible by default
-          'visibility': 'visible'
-        },
-        'paint': {
-          'circle-radius': 2,
-          'circle-color': 'rgba(55,148,179,1)'
-        },
-        'source-layer': 'WaPo'
-      });
-    })
+    // map.on('load', function () {
+    //   map.resize();
+    //   map.addLayer({
+    //     'id': 'WaPo',
+    //     'type': 'circle',
+    //     'source': 'WaPo',
+    //     'layout': {
+    //       // make layer visible by default
+    //       'visibility': 'visible'
+    //     },
+    //     'paint': {
+    //       'circle-radius': 2,
+    //       'circle-color': 'rgba(55,148,179,1)'
+    //     },
+    //     'source-layer': 'WaPo'
+    //   });
+    // })
   },
 
   mounted() {

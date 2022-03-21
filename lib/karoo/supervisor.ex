@@ -1,9 +1,9 @@
 defmodule Bike.Karoo.Supervisor do
-  def child_spec(_opts) do
+  def child_spec(opts) do
     %{
       id: __MODULE__,
-      start: {__MODULE__, :start_link, []},
-      type: :worker
+      start: {__MODULE__, :start_link, opts},
+      type: :supervisor
     }
   end
 
@@ -17,7 +17,8 @@ defmodule Bike.Karoo.Supervisor do
       # The watcher populates the database
       {Bike.Karoo.Watcher, Application.get_env(:bike, Bike.Karoo.Watcher)[:rider_id]},
       # Garbage collector cleans up old data
-      {Bike.Karoo.GarbageCollection, @hour}
+      {Bike.Karoo.GarbageCollection, @hour},
+      Bike.Karoo.Ride
     ]
 
     Supervisor.start_link(children, name: Bike.Karoo.Supervisor, strategy: :one_for_one)

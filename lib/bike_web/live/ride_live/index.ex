@@ -7,7 +7,17 @@ defmodule BikeWeb.RideLive.Index do
   # https://elixirforum.com/t/liveview-with-mapboxgl-js/32659
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :rides, list_rides())}
+    {:ok, assign(socket, :rides, [])}
+  end
+
+  @impl true
+  def handle_event("init_map", _params, socket) do
+    # Enum.each(list_current_ride(), fn x ->
+    #   push_event(socket, "new_entry", %{entry: x})
+    # end)
+
+    #  TODO: Push new events like this, find another way to bootstrap the map.
+    {:noreply, push_event(socket, "new_entry", %{entry: hd(list_current_ride())})}
   end
 
   # @impl true
@@ -41,10 +51,8 @@ defmodule BikeWeb.RideLive.Index do
   #   {:noreply, assign(socket, :rides, list_rides())}
   # end
 
-  defp list_rides do
-    [
-      %{id: "only", state: "idle"}
-    ]
+  defp list_current_ride do
+    Bike.Karoo.Ride.list()
 
     # Activity.list_rides()
   end
